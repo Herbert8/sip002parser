@@ -18,5 +18,20 @@ userinfo = websafe-base64-encode-utf8(method  ":" password)
 
 
 
+### 使用方法
 
+```
+Usage:
+  sip002parser -it <ss | sip002> -ot <gost | surge> [-p <port>] [-tfo] data_source
+	  Generate configuration from data.
+
+  sip002parser
+	  Show usage information.
+
+Options:
+  -it <ss | sip002>                         Specify input type.
+  -ot <gost | surge>                        Specify output type.
+  -p <port>                                 Specify local proxy port.
+  -tfo                                      Specifies to use tfo mode.
+```
 
