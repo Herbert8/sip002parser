@@ -14,8 +14,11 @@ func ParseSIP002(sip002data []byte) []*ShadowsocksConfig {
 }
 
 func ParseSIP002ToShadowsocksURIStrings(base64data []byte) []string {
-	data, err := base64.StdEncoding.DecodeString(string(base64data))
+	//data, err := base64.StdEncoding.DecodeString(string(base64data))
+	// 改为使用 RawStdEncoding 以解决某些 Padding 导致的问题
+	data, err := base64.RawStdEncoding.DecodeString(string(base64data))
 	if err != nil {
+		log.Println(err.Error())
 		return nil
 	}
 	dataStr := strings.TrimSpace(string(data))
@@ -39,7 +42,7 @@ func NewShadowsocksConfigFromSIP002URI(ssUriStr string) (*ShadowsocksConfig, err
 
 	retConfig := new(ShadowsocksConfig)
 
-	// p判断是否为合法 URL
+	// 判断是否为合法 URL
 	ssEncodedUrl, err := url.Parse(ssUriStr)
 	if err != nil {
 		log.Fatalln(err.Error())
