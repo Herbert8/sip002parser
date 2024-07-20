@@ -16,10 +16,11 @@ type ApplicationConfig struct {
 }
 
 const (
-	kSIP002      = "sip002"
-	kShadowsocks = "ss"
-	kSurge       = "surge"
-	kGost        = "gost"
+	kSIP002            = "sip002"
+	kShadowsocks       = "ss"
+	kSurge             = "surge"
+	kGost              = "gost"
+	kGostLoadBalancing = "gost-lb"
 )
 
 var AppConfig ApplicationConfig
@@ -38,7 +39,7 @@ Usage:
 
 Options:
   -it <ss | sip002>                         Specify input type.
-  -ot <gost | surge>                        Specify output type.
+  -ot <gost | gost-lb | surge               Specify output type.
   -p <port>                                 Specify local proxy port.
   -tfo                                      Specifies to use tfo mode.
 `
@@ -80,6 +81,10 @@ func (receiver *ApplicationConfig) InputTypeIsShadowsocks() bool {
 
 func (receiver *ApplicationConfig) OutputTypeIsGost() bool {
 	return receiver.outputType == kGost
+}
+
+func (receiver *ApplicationConfig) OutputTypeIsGostLoadBalancing() bool {
+	return receiver.outputType == kGostLoadBalancing
 }
 
 func (receiver *ApplicationConfig) OutputTypeIsSurge() bool {

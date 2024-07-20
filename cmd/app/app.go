@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"sip002parser/cmd/app/config"
+	"sip002parser/pkg/gost"
 	"sip002parser/pkg/sip002"
 	"sort"
 	"strings"
@@ -51,7 +52,7 @@ func main() {
 	// 处理 SIP002 格式数据
 	if config.AppConfig.InputTypeIsSIP002() {
 		ssCfgList = sip002.ParseSIP002(data)
-		log.Println(len(ssCfgList))
+		//log.Println(len(ssCfgList))
 	}
 
 	// 处理 JSON 格式的 Shadowsocks 设置
@@ -73,8 +74,12 @@ func main() {
 
 	if config.AppConfig.OutputTypeIsGost() {
 		for _, shadowsocksConfig := range ssCfgList {
-			fmt.Println(sip002.MakeGOSTCommandLine(config.AppConfig.Port, *shadowsocksConfig))
+			fmt.Println(gost.MakeGOSTCommandLine(config.AppConfig.Port, *shadowsocksConfig))
 		}
+	}
+
+	if config.AppConfig.OutputTypeIsGostLoadBalancing() {
+		gost.GenerateGostLoadBalancingConfig(ssCfgList)
 	}
 
 	if config.AppConfig.OutputTypeIsSurge() {
@@ -82,4 +87,5 @@ func main() {
 			fmt.Println(sip002.MakeSurgeProxyConfig(config.AppConfig.TFO, *shadowsocksConfig))
 		}
 	}
+
 }
