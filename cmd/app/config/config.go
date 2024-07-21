@@ -16,10 +16,12 @@ type ApplicationConfig struct {
 }
 
 const (
-	kSIP002      = "sip002"
-	kShadowsocks = "ss"
-	kSurge       = "surge"
-	kGost        = "gost"
+	kSIP002            = "sip002"
+	kShadowsocks       = "ss"
+	kSurge             = "surge"
+	kGost              = "gost-cli"
+	kGostLoadBalancing = "gost-lb"
+	kSingBox           = "sing-box"
 )
 
 var AppConfig ApplicationConfig
@@ -30,17 +32,17 @@ func showHelp() {
 
 	const sTemplate = `
 Usage:
-  %[1]s -it <ss | sip002> -ot <gost | surge> [-p <port>] [-tfo] data_source
+  %[1]s -it <ss | sip002> -ot <gost-cli | gost-lb | surge | sing-box> [-p <port>] [-tfo] data_source
 	  Generate configuration from data.
 
   %[1]s
 	  Show usage information.
 
 Options:
-  -it <ss | sip002>                         Specify input type.
-  -ot <gost | surge>                        Specify output type.
-  -p <port>                                 Specify local proxy port.
-  -tfo                                      Specifies to use tfo mode.
+  -it <ss | sip002>                                   Specify input type.
+  -ot <gost-cli | gost-lb | surge | sing-box>         Specify output type.
+  -p <port>                                           Specify local proxy port.
+  -tfo                                                Specifies to use tfo mode.
 `
 	fmt.Printf(sTemplate, appName)
 }
@@ -82,6 +84,14 @@ func (receiver *ApplicationConfig) OutputTypeIsGost() bool {
 	return receiver.outputType == kGost
 }
 
+func (receiver *ApplicationConfig) OutputTypeIsGostLoadBalancing() bool {
+	return receiver.outputType == kGostLoadBalancing
+}
+
 func (receiver *ApplicationConfig) OutputTypeIsSurge() bool {
 	return receiver.outputType == kSurge
+}
+
+func (receiver *ApplicationConfig) OutputTypeIsSingBox() bool {
+	return receiver.outputType == kSingBox
 }
