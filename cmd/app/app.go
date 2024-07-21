@@ -9,10 +9,20 @@ import (
 	"os"
 	"sip002parser/cmd/app/config"
 	"sip002parser/pkg/gost"
+	"sip002parser/pkg/singbox"
 	"sip002parser/pkg/sip002"
 	"sort"
 	"strings"
 )
+
+func shadowsocksConfigPtrListToValueList(ssCfgPtrList []*sip002.ShadowsocksConfig) []sip002.ShadowsocksConfig {
+	var ssCfgValList []sip002.ShadowsocksConfig
+	for _, ssCfgRef := range ssCfgPtrList {
+		ssCfgVal := *ssCfgRef
+		ssCfgValList = append(ssCfgValList, ssCfgVal)
+	}
+	return ssCfgValList
+}
 
 func main() {
 
@@ -86,6 +96,11 @@ func main() {
 		for _, shadowsocksConfig := range ssCfgList {
 			fmt.Println(sip002.MakeSurgeProxyConfig(config.AppConfig.TFO, *shadowsocksConfig))
 		}
+	}
+
+	if config.AppConfig.OutputTypeIsSingBox() {
+		jsonCfg := singbox.CreateFullConfigJSON(shadowsocksConfigPtrListToValueList(ssCfgList))
+		fmt.Println(jsonCfg)
 	}
 
 }
